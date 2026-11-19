@@ -1,0 +1,44 @@
+# -*- mode: python ; coding: utf-8 -*-
+"""PyInstaller build definition for a single windowed executable."""
+
+from pathlib import Path
+
+PROJECT_ROOT = Path(SPECPATH)
+
+a = Analysis(
+    [str(PROJECT_ROOT / "lolroms_downloader.py")],
+    pathex=[str(PROJECT_ROOT)],
+    binaries=[],
+    datas=[],
+    hiddenimports=[],
+    hookspath=[],
+    hooksconfig={},
+    runtime_hooks=[],
+    excludes=["pytest"],
+    noarchive=False,
+    optimize=0,
+)
+
+pyz = PYZ(a.pure)
+
+exe = EXE(
+    pyz,
+    a.scripts,
+    a.binaries,
+    a.datas,
+    [],
+    name="LoLRomsDownloader",
+    version=str(PROJECT_ROOT / "version_info.txt"),
+    debug=False,
+    bootloader_ignore_signals=False,
+    strip=False,
+    upx=True,
+    upx_exclude=[],
+    runtime_tmpdir=None,
+    console=False,
+    disable_windowed_traceback=False,
+    argv_emulation=False,
+    target_arch=None,
+    codesign_identity=None,
+    entitlements_file=None,
+)

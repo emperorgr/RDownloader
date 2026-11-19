@@ -1,0 +1,36 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "lolroms-downloader"
+version = "1.0.0"
+description = "Recursive, resumable downloader for lolroms.com with a Tkinter GUI"
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [{ name = "LoLRoms Downloader contributors" }]
+keywords = ["roms", "downloader", "tkinter", "lolroms", "resume"]
+classifiers = [
+  "Development Status :: 5 - Production/Stable",
+  "Environment :: Win32 (MS Windows)",
+  "Intended Audience :: End Users/Desktop",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: Microsoft :: Windows",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Topic :: Internet :: WWW/HTTP",
+  "Topic :: Utilities",
+]
+dependencies = ["requests>=2.31"]
+
+[project.optional-dependencies]
+dev = ["pyinstaller>=6.10"]
+
+[project.scripts]
+lolroms-downloader = "lolroms.cli:main"
+
+[tool.setuptools]
+packages = ["lolroms"]
