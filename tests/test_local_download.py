@@ -10,9 +10,9 @@ from pathlib import Path
 from tempfile import TemporaryDirectory
 from urllib.parse import unquote, urlparse
 
-from lolroms.client import DownloadStopped, LoLRomsClient
-from lolroms.config import Options
-from lolroms.util import ListingEntry
+from rdownloader.client import DownloadStopped, RDownloaderClient
+from rdownloader.config import Options
+from rdownloader.util import ListingEntry
 
 
 def relative_path(url: str) -> str:
@@ -58,10 +58,10 @@ class LocalDownloadTests(unittest.TestCase):
         self.addCleanup(self.output.cleanup)
         self.downloads = Path(self.output.name) / "downloads"
 
-    def _client(self, **overrides) -> LoLRomsClient:
+    def _client(self, **overrides) -> RDownloaderClient:
         opts = Options(output=Path(self.output.name), workers=1, live_bar=False,
                        quiet=True, timeout=10, check_size=True, **overrides)
-        client = LoLRomsClient(opts)
+        client = RDownloaderClient(opts)
         client.start = self.url
         return client
 

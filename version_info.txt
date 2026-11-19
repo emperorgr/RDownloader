@@ -17,13 +17,13 @@ VSVersionInfo(
       StringTable(
         "040904B0",
         [
-          StringStruct("CompanyName", "LoLRoms Downloader contributors"),
-          StringStruct("FileDescription", "LoLRoms Downloader"),
+          StringStruct("CompanyName", "RDownloader contributors"),
+          StringStruct("FileDescription", "RDownloader"),
           StringStruct("FileVersion", "1.0.0"),
-          StringStruct("InternalName", "LoLRomsDownloader"),
+          StringStruct("InternalName", "RDownloader"),
           StringStruct("LegalCopyright", "MIT License"),
-          StringStruct("OriginalFilename", "LoLRomsDownloader.exe"),
-          StringStruct("ProductName", "LoLRoms Downloader"),
+          StringStruct("OriginalFilename", "RDownloader.exe"),
+          StringStruct("ProductName", "RDownloader"),
           StringStruct("ProductVersion", "1.0.0"),
         ],
       )

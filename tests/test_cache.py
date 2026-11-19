@@ -7,10 +7,10 @@ from datetime import date
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
-from lolroms.cache import ScanCache
-from lolroms.util import ListingEntry
+from rdownloader.cache import ScanCache
+from rdownloader.util import ListingEntry
 
-URL = "https://lolroms.com/Arcade/FBNeo"
+URL = "https://source.invalid/Arcade/FBNeo"
 
 
 class ScanCacheTests(unittest.TestCase):

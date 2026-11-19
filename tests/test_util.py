@@ -8,8 +8,8 @@ from datetime import date, datetime
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
-from lolroms.config import Options
-from lolroms.util import (
+from rdownloader.config import Options
+from rdownloader.util import (
     LocalFileIndex,
     LocalStat,
     classify_entry,
@@ -28,7 +28,7 @@ from lolroms.util import (
     sanitize_filename,
 )
 
-BASE = "https://lolroms.com/Acorn/Archimedes"
+BASE = "https://source.invalid/Acorn/Archimedes"
 
 
 class HumanBytesTests(unittest.TestCase):
@@ -52,8 +52,8 @@ class SanitizeTests(unittest.TestCase):
 
 class CleanUrlTests(unittest.TestCase):
     def test_extracts_first_url(self) -> None:
-        self.assertEqual(clean_url('get "https://lolroms.com/Atari/2600".'),
-                         "https://lolroms.com/Atari/2600")
+        self.assertEqual(clean_url('get "https://source.invalid/Atari/2600".'),
+                         "https://source.invalid/Atari/2600")
 
     def test_plain_text_passthrough(self) -> None:
         self.assertEqual(clean_url("  https://example.com/x  "), "https://example.com/x")
@@ -62,7 +62,7 @@ class CleanUrlTests(unittest.TestCase):
 class ExtractLinksTests(unittest.TestCase):
     PAGE = """<html><nav>
         <a href="/Acorn">Acorn</a>
-        <a href="https://lolroms.com/Atari/2600">Atari</a>
+        <a href="https://source.invalid/Atari/2600">Atari</a>
       </nav><main>
         <a href="Game.7z">Game</a>
         <a href='Disc%201/'>Disc 1</a>
@@ -74,13 +74,13 @@ class ExtractLinksTests(unittest.TestCase):
     def test_ignores_navigation_and_duplicates(self) -> None:
         links = extract_links(self.PAGE, BASE + "/")
         self.assertEqual(links, [
-            "https://lolroms.com/Acorn/Archimedes/Game.7z",
-            "https://lolroms.com/Acorn/Archimedes/Disc%201/",
+            "https://source.invalid/Acorn/Archimedes/Game.7z",
+            "https://source.invalid/Acorn/Archimedes/Disc%201/",
         ])
 
     def test_no_nav_keeps_everything(self) -> None:
         links = extract_links('<a href="/a">A</a><a href="/b">B</a>',
-                              "https://lolroms.com/")
+                              "https://source.invalid/")
         self.assertEqual(len(links), 2)
 
 
@@ -99,7 +99,7 @@ class ClassifyLinkTests(unittest.TestCase):
 
     def test_rejects_self_and_parent(self) -> None:
         self.assertIsNone(classify_link(BASE, BASE))
-        self.assertIsNone(classify_link("https://lolroms.com/Acorn", BASE))
+        self.assertIsNone(classify_link("https://source.invalid/Acorn", BASE))
         self.assertIsNone(classify_link(BASE + "/", BASE))
 
     def test_dotted_folder_is_still_a_folder(self) -> None:
@@ -150,16 +150,16 @@ class ExtractListingTests(unittest.TestCase):
       </main></html>"""
 
     def test_only_content_rows_are_returned(self) -> None:
-        entries = extract_listing(self.PAGE, "https://lolroms.com/Arcade/FBNeo")
+        entries = extract_listing(self.PAGE, "https://source.invalid/Arcade/FBNeo")
         self.assertEqual([entry.name for entry in entries], ["Disc 1", "Game", "32x"])
         self.assertEqual([entry.url for entry in entries], [
-            "https://lolroms.com/Arcade/FBNeo/Disc%201",
-            "https://lolroms.com/Arcade/FBNeo/Game.7z",
-            "https://lolroms.com/Arcade/FBNeo/32x",
+            "https://source.invalid/Arcade/FBNeo/Disc%201",
+            "https://source.invalid/Arcade/FBNeo/Game.7z",
+            "https://source.invalid/Arcade/FBNeo/32x",
         ])
 
     def test_file_dates_are_parsed(self) -> None:
-        entries = extract_listing(self.PAGE, "https://lolroms.com/Arcade/FBNeo")
+        entries = extract_listing(self.PAGE, "https://source.invalid/Arcade/FBNeo")
         self.assertEqual(entries[1].date, date(2026, 11, 14))
         self.assertIsNone(entries[0].date)  # folders have no date
 
@@ -170,9 +170,9 @@ class ExtractListingTests(unittest.TestCase):
         self.assertIsNone(parse_listing_date("2026-99-99"))
 
     def test_falls_back_to_plain_links(self) -> None:
-        entries = extract_listing('<a href="/a.7z">A</a>', "https://lolroms.com/")
+        entries = extract_listing('<a href="/a.7z">A</a>', "https://source.invalid/")
         self.assertEqual([(entry.url, entry.name, entry.date) for entry in entries],
-                         [("https://lolroms.com/a.7z", "a.7z", None)])
+                         [("https://source.invalid/a.7z", "a.7z", None)])
 
     def test_markup_kind_distinguishes_dotted_folders(self) -> None:
         html = (
@@ -181,10 +181,10 @@ class ExtractListingTests(unittest.TestCase):
             '<div class="row"><a href="/A/Game.7z">Game</a>'
             '<span class="file-meta">2026-11-14</span></div>'
         )
-        entries = extract_listing(html, "https://lolroms.com/A")
+        entries = extract_listing(html, "https://source.invalid/A")
         self.assertEqual([entry.kind for entry in entries], ["dir", "dir", "file"])
 
-        folder = classify_entry(entries[0], "https://lolroms.com/A")
+        folder = classify_entry(entries[0], "https://source.invalid/A")
         self.assertIsNotNone(folder)
         assert folder is not None
         self.assertEqual(folder.kind, "dir")
@@ -267,8 +267,8 @@ class CompareDatesTests(unittest.TestCase):
 
 class VersionTests(unittest.TestCase):
     def test_version_is_1_0_0(self) -> None:
-        import lolroms
-        self.assertEqual(lolroms.__version__, "1.0.0")
+        import rdownloader
+        self.assertEqual(rdownloader.__version__, "1.0.0")
 
 
 class OptionsTests(unittest.TestCase):

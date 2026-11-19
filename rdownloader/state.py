@@ -5,8 +5,8 @@ from __future__ import annotations
 import configparser
 from pathlib import Path
 
-STATE_FILE = ".lolroms_state.cfg"
-DONE_FILE = ".lolroms_done.cfg"
+STATE_FILE = ".rdownloader_state.cfg"
+DONE_FILE = ".rdownloader_done.cfg"
 
 
 class GuiSettings:

@@ -1,4 +1,4 @@
-"""Allow ``python -m lolroms``."""
+"""Allow ``python -m RDownloader``."""
 
 from .cli import main
 

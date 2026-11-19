@@ -6,7 +6,7 @@ from pathlib import Path
 PROJECT_ROOT = Path(SPECPATH)
 
 a = Analysis(
-    [str(PROJECT_ROOT / "lolroms_downloader.py")],
+    [str(PROJECT_ROOT / "rdownloader.py")],
     pathex=[str(PROJECT_ROOT)],
     binaries=[],
     datas=[],
@@ -27,7 +27,7 @@ exe = EXE(
     a.binaries,
     a.datas,
     [],
-    name="LoLRomsDownloader",
+    name="RDownloader",
     version=str(PROJECT_ROOT / "version_info.txt"),
     debug=False,
     bootloader_ignore_signals=False,

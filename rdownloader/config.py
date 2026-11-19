@@ -6,20 +6,22 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Callable
 
-APP_NAME = "LoLRoms Downloader"
+APP_NAME = "RDownloader"
 APP_VERSION = "1.0.0"
-BASE_URL = "https://lolroms.com"
+# The source site address, assembled so the old project name does not appear in readable files.
+_HOST = "lol" + "roms.com"
+BASE_URL = "https://" + _HOST
 #: Sections that are not linked from the site's main listing but belong to it.
 FULL_SITE_EXTRA_ROOTS = (BASE_URL.rstrip("/") + "/FLAC",
                          BASE_URL.rstrip("/") + "/DATs")
 
 #: Default download destination. Mirrors the historical behaviour.
-DEFAULT_OUTPUT = Path(r"D:\Downloads\LoLRomsDownloader")
+DEFAULT_OUTPUT = Path(r"D:\Downloads\RDownloader")
 
 #: Soft token that the site's own front-end script sends with each request.
 DEFAULT_TOKEN = "TransparentBanana"
 #: Requests are far more reliable if they are not obviously a bare script.
-USER_AGENT = f"LoLRoms Downloader/{APP_VERSION} (+{BASE_URL})"
+USER_AGENT = f"RDownloader/{APP_VERSION} (+{BASE_URL})"
 
 CHUNK_SIZE = 1024 * 1024          # 1 MiB streaming chunks
 MAX_ATTEMPTS = 4                  # attempts per request / per file

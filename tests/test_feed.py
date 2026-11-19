@@ -7,19 +7,19 @@ from datetime import datetime, timezone
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
-from lolroms.feed import FeedCache, FeedItem, matches_item, parse_feed
+from rdownloader.feed import FeedCache, FeedItem, matches_item, parse_feed
 
 XML = """<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0"><channel><title>Latest ROMs</title>
   <item>
     <title>Pang (World)</title>
-    <link>https://lolroms.com/SEGA/Mega%20Drive/Pang%20(World).7z</link>
+    <link>https://source.invalid/SEGA/Mega%20Drive/Pang%20(World).7z</link>
     <pubDate>Wed, 18 Nov 2026 16:54:53 GMT</pubDate>
     <description>SEGA/Mega Drive/Pang (World).7z</description>
   </item>
   <item>
     <title>Alpha (USA)</title>
-    <link>https://lolroms.com/Acorn/Archimedes/Alpha.7z</link>
+    <link>https://source.invalid/Acorn/Archimedes/Alpha.7z</link>
     <pubDate>Wed, 18 Nov 2026 10:00:00 GMT</pubDate>
     <description>Acorn/Archimedes/Alpha.7z</description>
   </item>
@@ -47,7 +47,7 @@ class ParseFeedTests(unittest.TestCase):
 
 class MatchTests(unittest.TestCase):
     def setUp(self) -> None:
-        self.item = FeedItem("Pang (World)", "https://lolroms.com/SEGA/Mega%20Drive/Pang%20(World).7z",
+        self.item = FeedItem("Pang (World)", "https://source.invalid/SEGA/Mega%20Drive/Pang%20(World).7z",
                              None, "SEGA/Mega Drive/Pang (World).7z")
 
     def test_folder_prefix(self) -> None:

@@ -1,4 +1,4 @@
-"""LoLRoms Downloader - recursive, resumable downloader for lolroms.com."""
+"""RDownloader - recursive, resumable downloader for the source site."""
 
 from .config import APP_NAME, APP_VERSION
 

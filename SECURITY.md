@@ -22,8 +22,8 @@ the current 1.0.x line and credited in the release notes unless you ask otherwis
 
 ## Scope notes
 
-- The application downloads files over HTTPS from lolroms.com and writes them to a
+- The application downloads files over HTTPS from the source site and writes them to a
   folder chosen by the user.
 - It stores no credentials and sends no telemetry.
-- Local state is limited to `.lolroms_state.cfg`, `.lolroms_done.cfg` and the `cache/`
+- Local state is limited to `.rdownloader_state.cfg`, `.rdownloader_done.cfg` and the `cache/`
   folder next to the executable.

@@ -3,14 +3,14 @@ requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "lolroms-downloader"
+name = "rdownloader"
 version = "1.0.0"
-description = "Recursive, resumable downloader for lolroms.com with a Tkinter GUI"
+description = "Recursive, resumable downloader for the source site with a Tkinter GUI"
 readme = "README.md"
 requires-python = ">=3.11"
 license = { text = "MIT" }
-authors = [{ name = "LoLRoms Downloader contributors" }]
-keywords = ["roms", "downloader", "tkinter", "lolroms", "resume"]
+authors = [{ name = "RDownloader contributors" }]
+keywords = ["roms", "downloader", "tkinter", "rdownloader", "resume"]
 classifiers = [
   "Development Status :: 5 - Production/Stable",
   "Environment :: Win32 (MS Windows)",
@@ -30,7 +30,7 @@ dependencies = ["requests>=2.31"]
 dev = ["pyinstaller>=6.10"]
 
 [project.scripts]
-lolroms-downloader = "lolroms.cli:main"
+rdownloader = "rdownloader.cli:main"
 
 [tool.setuptools]
-packages = ["lolroms"]
+packages = ["rdownloader"]

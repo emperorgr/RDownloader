@@ -18,7 +18,7 @@ A clear description of what went wrong.
 What you expected instead.
 
 **Environment**
-- LoLRoms Downloader version: 1.0.0
+- RDownloader version: 1.0.0
 - Windows version:
 - Python version (if running from source):
 - Output folder type (local disk / network share):

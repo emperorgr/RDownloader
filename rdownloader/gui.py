@@ -18,7 +18,7 @@ from urllib.parse import unquote, urlparse
 
 from .cache import ScanCache
 from .feed import FeedCache, matches_item, parse_feed
-from .client import DownloadStopped, LoLRomsClient
+from .client import DownloadStopped, RDownloaderClient
 from .config import (
     APP_NAME,
     APP_VERSION,
@@ -991,7 +991,7 @@ class App:
         messagebox.showinfo(
             "About " + APP_NAME,
             f"{APP_NAME} {APP_VERSION}\n\n"
-            "Recursive, resumable downloader for lolroms.com with a folder tree, "
+            "Recursive, resumable downloader for the source site with a folder tree, "
             "parallel transfers and resume support.\n\n"
             "Built with Python 3 and Tkinter. Only runtime dependency: requests.\n\n"
             "Press F1 in the main window for the full shortcut list.\n\n"
@@ -1242,7 +1242,7 @@ class App:
     def _compare_folder_worker(self, local_dir: str, urls: list[str], prefix: str,
                                base: str, dates: dict[str, date | None],
                                opts: Options) -> None:
-        client = LoLRomsClient(opts)
+        client = RDownloaderClient(opts)
         results: list[tuple[str, str, date | None, int | None, int | None, str]] = []
         total = len(urls)
         step = max(1, total // 200)
@@ -1390,7 +1390,7 @@ class App:
 
     def _rss_worker(self, opts: Options, prefix: str, query: str, exact_url: str,
                     done: set[str]) -> None:
-        client = LoLRomsClient(opts)
+        client = RDownloaderClient(opts)
         try:
             items = parse_feed(client.fetch_feed())
         except Exception as error:  # noqa: BLE001
@@ -1472,7 +1472,7 @@ class App:
     def _load_worker(self, url: str, use_cache: bool,
                      compare_dir: Path | None, opts: Options,
                      registry: DoneRegistry, extra_starts=()) -> None:
-        client = LoLRomsClient(opts)
+        client = RDownloaderClient(opts)
         client.opts.log_cb = lambda message: self.q.put((EV_LOG, message))
         client.start = url
         try:
@@ -1680,7 +1680,7 @@ class App:
                 self.q.put((EV_STOPPED, (url, name)))
                 return
 
-            client = LoLRomsClient(opts)
+            client = RDownloaderClient(opts)
             client.start = base_url
             started.add(url)
             self.q.put((EV_START, url))

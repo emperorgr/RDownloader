@@ -1,6 +1,6 @@
 ---
 name: Feature request
-about: Suggest an improvement for LoLRoms Downloader
+about: Suggest an improvement for RDownloader
 title: "[Feature] "
 labels: enhancement
 assignees: ""

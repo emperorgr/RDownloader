@@ -1,7 +1,7 @@
-# LoLRoms Downloader
+# RDownloader
 
 **Version 1.0.0** · A recursive, resumable downloader for
-[lolroms.com](https://lolroms.com) with both a command-line interface and a Tkinter GUI.
+the source site, with both a command-line interface and a Tkinter GUI.
 Packaged as a single Windows executable.
 
 This is a cleaned-up rebuild of the original single-file script: behaviour is preserved,
@@ -27,7 +27,7 @@ the code is split into focused modules, and the HTTP layer is thread-safe.
   remote folder at a time
 - Scan results are cached to disk and can be reloaded without hitting the site again
 - RSS feed watcher with a local seen-items cache; filters by platform/folder/game and
-  ignores files already recorded in `.lolroms_done.cfg`
+  ignores files already recorded in `.rdownloader_done.cfg`
 - One-click/one-key selection of just the new, updated and resized files
 - Resume interrupted transfers with HTTP `Range` requests
 - Automatic retries with exponential back-off and jitter (per request and per file)
@@ -49,7 +49,7 @@ the code is split into focused modules, and the HTTP layer is thread-safe.
 ## Quick start (built executable)
 
 ```
-dist\LoLRomsDownloader.exe
+dist\RDownloader.exe
 ```
 
 Double-clicking the executable opens the GUI. It stores two small state files next to itself
@@ -57,8 +57,8 @@ and/or in the chosen output folder:
 
 | File | Purpose |
 | --- | --- |
-| `.lolroms_state.cfg` | Last URL and output folder (next to the exe) |
-| `.lolroms_done.cfg` | URLs already downloaded into that output folder (download ledger) |
+| `.rdownloader_state.cfg` | Last URL and output folder (next to the exe) |
+| `.rdownloader_done.cfg` | URLs already downloaded into that output folder (download ledger) |
 | `cache\scans\*.json` | Cached file lists/dates for every scanned start URL |
 | `cache\feed.json` | RSS links already reported, so later checks only show new items |
 
@@ -80,7 +80,7 @@ with no differences.
 | Update | `New` (no local file), `Update` (remote date is newer), `Size differs` (same date, different byte count), `Current`. Folder rows summarise their contents |
 | Status | Pending / Not selected / Downloading / Downloaded / Skipped / Failed |
 
-Check **Entire site** to scan from `https://lolroms.com/` instead of the URL in the box.
+Check **Entire site** to scan from `https://source.invalid/` instead of the URL in the box.
 The statistics line shows site-wide `New`, `Updates`, `Sizes` and `Current` counts. Use
 **Select new + updates** in the right-click menu (or Ctrl+Shift+U) to tick everything
 that needs downloading.
@@ -114,25 +114,25 @@ that needs downloading.
 - **RSS:** right-click a folder for *Check RSS for new files here*, a file for
   *Check RSS for this game*, or empty space / **F9** for the whole feed. The feed is
   filtered to the selection, checked against the local feed cache, and files already in
-  `.lolroms_done.cfg` are skipped. New matching entries are listed in the log and ticked
+  `.rdownloader_done.cfg` are skipped. New matching entries are listed in the log and ticked
   in the tree when they are part of the current scan.
 
 ## Command line
 
 ```
-python lolroms_downloader.py "https://lolroms.com/Acorn/Archimedes"
-python lolroms_downloader.py URL -o D:\roms -w 4 --filter .7z,.flac
-python lolroms_downloader.py URL --list
-python lolroms_downloader.py --full-site --list --scan-workers 8
-python lolroms_downloader.py URL --no-recursive --no-resume --no-check-size
-python lolroms_downloader.py --gui
-python lolroms_downloader.py --version
+python rdownloader.py "https://source.invalid/Acorn/Archimedes"
+python rdownloader.py URL -o D:\roms -w 4 --filter .7z,.flac
+python rdownloader.py URL --list
+python rdownloader.py --full-site --list --scan-workers 8
+python rdownloader.py URL --no-recursive --no-resume --no-check-size
+python rdownloader.py --gui
+python rdownloader.py --version
 ```
 
-Defaults: output `D:\Downloads\LoLRomsDownloader`, 4 workers, recursive, resume on,
+Defaults: output `D:\Downloads\RDownloader`, 4 workers, recursive, resume on,
 size check on, 60 s socket timeout. `--scan-workers` controls parallel listing
 requests (default 4). `--full-site` ignores the URL and scans from
-`https://lolroms.com/`. Exit codes: `0` all files OK, `2` some failures,
+`https://source.invalid/`. Exit codes: `0` all files OK, `2` some failures,
 `1` scan failure.
 
 ## Keyboard and mouse shortcuts
@@ -171,18 +171,18 @@ The GUI shows the same list via **F1**.
 ## Project layout
 
 ```
-lolroms_downloader.py     entry point (CLI + GUI), used by PyInstaller
+rdownloader.py     entry point (CLI + GUI), used by PyInstaller
 app_gui.py                compatibility launcher for the GUI
-lolroms/
+RDownloader/
   config.py               constants and the Options dataclass
   util.py                 names, sizes, link extraction, path mapping, progress bar
-  client.py               LoLRomsClient: crawl, remote size, resumable download
+  client.py               RDownloaderClient: crawl, remote size, resumable download
   cli.py                  argparse front end
   gui.py                  Tkinter application
   state.py                persisted settings and completed-file registry
   cache.py                scan-result cache (one JSON file per start URL)
   feed.py                 RSS parsing, relevance matching and seen-item cache
-  __main__.py             allows `python -m lolroms`
+  __main__.py             allows `python -m RDownloader`
 tests/
   test_util.py            pure helper tests
   test_local_download.py  crawl/download tests against a local HTTP server
@@ -190,7 +190,7 @@ tests/
   test_cache.py           scan cache round-trip and corruption handling
   test_feed.py            RSS parsing, matching and seen-item cache
 smoke_test.py             launches the built exe and verifies the GUI window appears
-LoLRomsDownloader.spec    PyInstaller one-file, windowed build
+RDownloader.spec    PyInstaller one-file, windowed build
 build.ps1                 reproducible build script
 .python/                  project-local CPython + pip + PyInstaller (not committed)
 ```
@@ -219,7 +219,7 @@ on a system-wide Python installation:
 .\build.ps1
 ```
 
-Output: `dist\LoLRomsDownloader.exe` (one file, no console window).
+Output: `dist\RDownloader.exe` (one file, no console window).
 
 If `.python/` is missing, install CPython 3.13 for the current user and point `build.ps1`
 at that interpreter, or create the toolchain with:
@@ -233,9 +233,9 @@ python -m venv .venv
 
 ```powershell
 .\.python\python.exe -m unittest discover -s tests -v
-.\.python\python.exe lolroms_downloader.py --help
-.\.python\python.exe lolroms_downloader.py --gui
-.\.python\python.exe smoke_test.py        # verifies dist\LoLRomsDownloader.exe opens its window
+.\.python\python.exe rdownloader.py --help
+.\.python\python.exe rdownloader.py --gui
+.\.python\python.exe smoke_test.py        # verifies dist\RDownloader.exe opens its window
 ```
 
 ## How a run works
@@ -249,7 +249,7 @@ python -m venv .venv
 2. **Compare & plan** — each file is compared with its local copy: missing → `New`,
    remote date newer than the local modification date → `Update`, otherwise
    `Current`. Extension filters are applied; the GUI additionally hides URLs listed
-   in the output folder's `.lolroms_done.cfg` and lets you tick folders/files.
+   in the output folder's `.rdownloader_done.cfg` and lets you tick folders/files.
 3. **Transfer** — each file is written to `<output>/<category>/<subfolders>/<file>`.
    Existing files are compared with the remote size: equal/larger is skipped, smaller is
    resumed from its current length. Failed requests retry with jittered back-off.
@@ -257,7 +257,7 @@ python -m venv .venv
 
 ## Notes
 
-- Requests carry the site's soft token (`X-LoLRoms-Token`) and a descriptive User-Agent.
+- Requests carry the site's soft token and a descriptive User-Agent.
   Respect the site's terms and the copyright status of ROMs in your jurisdiction.
 - Integrity is inferred from byte size only; no checksums are verified.
 - `--token` overrides the built-in token if the site changes it.
@@ -281,7 +281,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md). Run the test suite before opening a pull
 
 ## License
 
-[MIT](LICENSE) © 2026 LoLRoms Downloader contributors.
+[MIT](LICENSE) © 2026 RDownloader contributors.
 
-This project is not affiliated with lolroms.com. Download only material you are legally
+This project is not affiliated with the source site. Download only material you are legally
 allowed to use.

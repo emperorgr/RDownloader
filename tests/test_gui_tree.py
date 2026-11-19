@@ -12,7 +12,7 @@ from datetime import date, datetime
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
-from lolroms.gui import (
+from rdownloader.gui import (
     CHECKED,
     EV_COMPARE,
     EV_COMPLETE,
@@ -24,7 +24,7 @@ from lolroms.gui import (
     App,
     DisplayFile,
 )
-from lolroms.state import STATE_FILE, GuiSettings
+from rdownloader.state import STATE_FILE, GuiSettings
 
 try:
     _probe = tk.Tk()
@@ -44,7 +44,7 @@ class FolderTreeTests(unittest.TestCase):
         self.app = App(self.root)
         self.app.settings = GuiSettings(Path(self.tmp.name) / STATE_FILE)
         self.app.base_path = "/Arcade/FBNeo"
-        base = "https://lolroms.com/Arcade/FBNeo"
+        base = "https://source.invalid/Arcade/FBNeo"
         self.base = base
         self.app._scan_base_url = base
         self.aburner = base + "/32x/aburner.7z"
@@ -276,7 +276,7 @@ class FolderTreeTests(unittest.TestCase):
         self.assertTrue(self.app.help_btn.winfo_exists())
         self.assertFalse(hasattr(self.app, "about_btn"))
         self.assertEqual(self._menu_labels(self.app._help_menu), [
-            "Shortcuts\u2026", "About LoLRoms Downloader", "Open output folder",
+            "Shortcuts\u2026", "About RDownloader", "Open output folder",
             "Open cache folder", "Clear scan cache", "Clear RSS cache",
             "Check RSS for new files\u2026", "Quit",
         ])
@@ -385,8 +385,8 @@ class FolderTreeTests(unittest.TestCase):
 
     def test_download_worker_runs_without_tk_access(self) -> None:
         from unittest.mock import patch
-        from lolroms.client import DownloadResult
-        from lolroms.state import DoneRegistry
+        from rdownloader.client import DownloadResult
+        from rdownloader.state import DoneRegistry
 
         class FakeClient:
             def __init__(self, opts) -> None:  # noqa: ANN001
@@ -399,7 +399,7 @@ class FolderTreeTests(unittest.TestCase):
         opts = self.app._opts()
         registry = DoneRegistry(Path(self.tmp.name))
         fake_path = Path(self.tmp.name) / "fake.bin"
-        with patch("lolroms.gui.LoLRomsClient", FakeClient):
+        with patch("rdownloader.gui.RDownloaderClient", FakeClient):
             worker = threading.Thread(
                 target=self.app._download_worker,
                 args=([self.aburner], set(), {}, opts, self.base, registry),
@@ -426,7 +426,7 @@ class FolderTreeTests(unittest.TestCase):
         self.assertEqual(done_message, "Finished: 1 ok, 0 failed.")
 
     def test_stop_marks_pending_files_stopped(self) -> None:
-        from lolroms.state import DoneRegistry
+        from rdownloader.state import DoneRegistry
 
         self.app.stop = True
         opts = self.app._opts()
@@ -517,18 +517,18 @@ class FolderTreeTests(unittest.TestCase):
         self.assertEqual(str(self.app.compare_btn["state"]), "normal")
 
     def test_folder_path_prefix(self) -> None:
-        self.app._scan_base_url = "https://lolroms.com/Arcade/FBNeo"
+        self.app._scan_base_url = "https://source.invalid/Arcade/FBNeo"
         self.assertEqual(self.app._folder_path_prefix("folder:32x"),
                          "/Arcade/FBNeo/32x")
         self.assertEqual(self.app._folder_path_prefix(""), "/Arcade/FBNeo")
 
     def test_rss_check_marks_relevant_files(self) -> None:
-        from lolroms.feed import FeedItem
+        from rdownloader.feed import FeedItem
 
         self.app._set_file_selected(self.aburner, False)
         item = FeedItem("aburner", self.aburner, None,
                         "Arcade/FBNeo/32x/aburner.7z")
-        missing = FeedItem("new", "https://lolroms.com/Arcade/FBNeo/32x/new.7z", None,
+        missing = FeedItem("new", "https://source.invalid/Arcade/FBNeo/32x/new.7z", None,
                            "Arcade/FBNeo/32x/new.7z")
         self.app._handle_rss({
             "items": [item, missing],
@@ -543,7 +543,7 @@ class FolderTreeTests(unittest.TestCase):
 
     def test_entire_site_load_uses_site_root(self) -> None:
         from unittest.mock import patch
-        from lolroms.config import BASE_URL, FULL_SITE_EXTRA_ROOTS
+        from rdownloader.config import BASE_URL, FULL_SITE_EXTRA_ROOTS
 
         seen: dict[str, object] = {}
 
@@ -570,8 +570,8 @@ class FolderTreeTests(unittest.TestCase):
             def start(self) -> None:
                 self._target(*self._args)
 
-        with patch("lolroms.gui.LoLRomsClient", FakeClient), \
-                patch("lolroms.gui.threading.Thread", ImmediateThread):
+        with patch("rdownloader.gui.RDownloaderClient", FakeClient), \
+                patch("rdownloader.gui.threading.Thread", ImmediateThread):
             self.app.full_site.set(True)
             self.app.load()
 

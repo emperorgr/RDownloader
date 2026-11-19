@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Smoke test: launch the built exe, confirm the GUI window appears, then close it.
 
-Success = a visible top-level window titled 'LoLRoms Downloader' exists, which
+Success = a visible top-level window titled 'RDownloader' exists, which
 proves Tk and all bundled imports work (a crash would show a traceback dialog
 or the process would exit).
 """
@@ -14,8 +14,8 @@ import sys
 import time
 from pathlib import Path
 
-EXE = Path(__file__).resolve().parent / "dist" / "LoLRomsDownloader.exe"
-WANT_TITLE = "LoLRoms Downloader"
+EXE = Path(__file__).resolve().parent / "dist" / "RDownloader.exe"
+WANT_TITLE = "RDownloader"
 TIMEOUT = 45
 
 user32 = ctypes.windll.user32

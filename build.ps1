@@ -1,4 +1,4 @@
-# Build LoLRomsDownloader.exe using the project-local Python toolchain.
+# Build RDownloader.exe using the project-local Python toolchain.
 [CmdletBinding()]
 param()
 
@@ -14,7 +14,7 @@ Push-Location $root
 try {
     # PyInstaller logs to stderr; keep that from being treated as a terminating error.
     $ErrorActionPreference = 'Continue'
-    & $python -m PyInstaller --noconfirm --clean 'LoLRomsDownloader.spec'
+    & $python -m PyInstaller --noconfirm --clean 'RDownloader.spec'
     $code = $LASTEXITCODE
     $ErrorActionPreference = 'Stop'
     if ($code -ne 0) { throw "PyInstaller failed with exit code $code" }
@@ -22,5 +22,5 @@ try {
     Pop-Location
 }
 
-$exe = Join-Path $root 'dist\LoLRomsDownloader.exe'
+$exe = Join-Path $root 'dist\RDownloader.exe'
 Write-Host "Built: $exe"

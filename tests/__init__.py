@@ -1,1 +1,1 @@
-"""Test package for LoLRoms Downloader."""
+"""Test package for RDownloader."""

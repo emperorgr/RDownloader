@@ -11,8 +11,8 @@ cache/*
 .coverage
 htmlcov/
 *.log
-.lolroms_state.cfg
-.lolroms_done.cfg
+.rdownloader_state.cfg
+.rdownloader_done.cfg
 .idea/
 .vscode/
 .DS_Store

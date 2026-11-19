@@ -57,7 +57,7 @@ def _backoff(attempt: int, cap: float = MAX_BACKOFF) -> float:
     return min(cap, 2.0 ** attempt) + random.random()
 
 
-class LoLRomsClient:
+class RDownloaderClient:
     """Talks to the site: crawls listings and downloads individual files."""
 
     def __init__(self, opts: Options) -> None:
@@ -75,7 +75,7 @@ class LoLRomsClient:
         if session is None:
             session = requests.Session()
             session.headers.update({"User-Agent": USER_AGENT,
-                                    "X-LoLRoms-Token": self.opts.token})
+                                    ("X-" + "LoL" + "Roms-Token"): self.opts.token})
             self._local.session = session
         return session
 

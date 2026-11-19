@@ -1,6 +1,6 @@
 # Contributing
 
-Thanks for improving LoLRoms Downloader.
+Thanks for improving RDownloader.
 
 ## Development setup
 
@@ -34,7 +34,7 @@ Tests must pass on Windows with Python 3.13; CI runs the same command on
 .\build.ps1
 ```
 
-Output: `dist\LoLRomsDownloader.exe` (one-file, windowed). Do not commit `build/`,
+Output: `dist\RDownloader.exe` (one-file, windowed). Do not commit `build/`,
 `dist/`, `.python/`, or the local `cache/` folder.
 
 ## Code style
@@ -59,4 +59,4 @@ Output: `dist\LoLRomsDownloader.exe` (one-file, windowed). Do not commit `build/
 ## Legal
 
 This project is a downloader, not a ROM provider. Do not add links to copyrighted
-content, and keep the existing disclaimer intact. Respect lolroms.com's terms of use.
+content, and keep the existing disclaimer intact. Respect the source site's terms of use.

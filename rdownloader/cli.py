@@ -9,7 +9,7 @@ import time
 from pathlib import Path
 
 from . import __version__
-from .client import DownloadResult, LoLRomsClient
+from .client import DownloadResult, RDownloaderClient
 from .config import (
     APP_NAME,
     BASE_URL,
@@ -23,13 +23,13 @@ from .util import ListingEntry, human_bytes
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
-        prog="lolroms_downloader",
+        prog="rdownloader",
         description=f"Robust recursive downloader for {BASE_URL}",
         epilog=("examples:\n"
-                '  python lolroms_downloader.py "https://lolroms.com/Acorn/Archimedes"\n'
-                "  python lolroms_downloader.py URL -o D:\\\\roms -w 4 --filter .7z,.flac\n"
-                "  python lolroms_downloader.py URL --list\n"
-                "  python lolroms_downloader.py --gui\n"),
+                '  python rdownloader.py "https://source.invalid/Acorn/Archimedes"\n'
+                "  python rdownloader.py URL -o D:\\\\roms -w 4 --filter .7z,.flac\n"
+                "  python rdownloader.py URL --list\n"
+                "  python rdownloader.py --gui\n"),
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )
     parser.add_argument("url", nargs="?",
@@ -69,7 +69,7 @@ def _report_failure(index: int, total: int, url: str, error: Exception) -> None:
     print(f"[{index}/{total}] {'FAILED':<11} {'':>9}  {url}\n        -> {error}")
 
 
-def _download(client: LoLRomsClient, url: str, index: int, total: int) -> bool:
+def _download(client: RDownloaderClient, url: str, index: int, total: int) -> bool:
     try:
         result = client.download_file(url)
     except Exception as error:  # noqa: BLE001 - one bad file must not stop the batch
@@ -80,7 +80,7 @@ def _download(client: LoLRomsClient, url: str, index: int, total: int) -> bool:
 
 
 def run(opts: Options, start_url: str) -> int:
-    client = LoLRomsClient(opts)
+    client = RDownloaderClient(opts)
     client.start = start_url
 
     try:
